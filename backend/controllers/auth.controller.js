@@ -3,7 +3,7 @@ export const signup = (req, res) => {
     const{fullName , username , password , confirmPassword , gender} = req.body ; 
 
   } catch (error) {
-    console.log({mesage: 'You have an Error'});
+    console.log({mesage: 'You have an Error '});
     
   }  
 };
