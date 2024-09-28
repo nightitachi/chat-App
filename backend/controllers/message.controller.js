@@ -19,7 +19,7 @@ export const sendMessage= async(req,res)=>{
         participents:[senderId , receiverId],
       })
     }
-    const newMessage = new Message({
+    const newMessage = await new Message({
       senderId,
       receiverId,
       message
@@ -38,26 +38,24 @@ export const sendMessage= async(req,res)=>{
   
 }
 
-export const getMessage = async (req, res) => {
+
+export const getMessage= async(req , res)=>{
   try {
-    const { id: userToChatId } = req.params; // Extract userToChatId from URL
-    const senderId = req.user._id; // Get the sender's ID from the authenticated user
+    const {id:userTochatId} = req.params;
+    const senderId = req.user._id;
 
-    // Find the conversation where both sender and userToChatId are participants
     const conversation = await Conversations.findOne({
-      participents: { $all: [senderId, userToChatId] },
-    }).populate("messages"); // Populate the 'messages' field
+      participents:{$all :[senderId , userTochatId]},
+    }).populate("messages");
 
-    if (!conversation) {
-      // If no conversation found, return an empty array or a message
-      return res.status(200).json([]); 
-    }
+    if(!conversation) return res.status(200).json([]);
 
-    // Extract and return the messages from the conversation
-    const messages = conversation.messages;
-    res.status(200).json(messages);
+    const messages= conversation.messages;
+    
+    res.status(200).json(messages)
   } catch (error) {
-    console.log("error message:", error.message);
-    res.status(500).json({ error: "Internal server error" });
+    console.log("error message : " , error.message);
+    res.status(500).json({error: "internal server error"})
+    
   }
-};
+}
