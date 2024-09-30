@@ -1,19 +1,16 @@
 import React from 'react'
-import Converstion from './Converstion'
+import Conversation from './Converstion.js'
 
 const Conversations = () => {
   return (
     <div className='py-2 flex flex-col overflow-auto'>
-			<Conversations/>
-      <Conversations/>
-			<Conversations/>
-			<Conversations/>
-			<Conversations/>
-			<Conversations/>
-			<Conversations/>
-			<Conversations/>
-			<Conversations/>
-
+			<Conversation/>
+      <Conversation/>
+      <Conversation/>
+      <Conversation/>
+      <Conversation/>
+      <Conversation/>
+      <Conversation/>
 
 		</div>
   )
