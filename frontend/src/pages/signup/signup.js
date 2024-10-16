@@ -9,7 +9,7 @@ const Signup = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "",  // This will store the selected gender
+    gender: "",  
   });
 
   const { loading, signup } = useSignup();
