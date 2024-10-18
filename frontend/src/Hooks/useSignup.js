@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import toast from 'react-hot-toast'
+import toast, { ErrorIcon } from 'react-hot-toast'
 const useSignup = () => {
   const [loading , setLoading] = useState(false)
   const signup= async({fullName , username , password , confirmPassword , gender})=>{
@@ -13,6 +13,9 @@ const useSignup = () => {
         body:JSON.stringify({fullName , username , password , confirmPassword , gender})
       })
       const data = await res.json()
+      if(data.error){
+        throw new Error(data.error)
+      }
       console.log(data)
     } catch (error) {
       toast.error(error.message)
