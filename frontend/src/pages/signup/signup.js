@@ -2,26 +2,46 @@ import React, { useState } from "react";
 import GenderCheckbox from "./GenderCheckbox";
 import { Link } from "react-router-dom";
 import useSignup from "../../Hooks/useSignup.js";
-
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const [inputs, setInputs] = useState({
     fullName: "",
     username: "",
     password: "",
     confirmPassword: "",
-    gender: "",  
+    gender: "",
   });
 
   const { loading, signup } = useSignup();
-
-  // Update gender in the state when a checkbox is selected
+  const navigate = useNavigate()
   const handleCheckboxChange = (gender) => {
     setInputs({ ...inputs, gender });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await signup(inputs);  // Use the updated inputs including gender
+
+    // Show toast message if any field is missing before calling signup function
+    if (!inputs.fullName || !inputs.username || !inputs.password || !inputs.confirmPassword || !inputs.gender) {
+      toast.error("All fields are required. Please fill out the form completely.");
+      return;
+    }
+
+    // Ensure passwords match before calling signup
+    if (inputs.password !== inputs.confirmPassword) {
+      toast.error("Passwords do not match. Please try again.");
+      return;
+    }
+
+    await signup(inputs);
+    const success = await signup(inputs);
+
+    if (success) {
+      navigate("/Home");  // Navigate to home page on successful signup
+    } else {
+      toast.error("Signup failed. Please try again.");
+    }
   };
 
   return (
@@ -41,9 +61,7 @@ const Signup = () => {
               placeholder="John Doe"
               className="w-full input input-bordered h-10"
               value={inputs.fullName}
-              onChange={(e) =>
-                setInputs({ ...inputs, fullName: e.target.value })
-              }
+              onChange={(e) => setInputs({ ...inputs, fullName: e.target.value })}
             />
           </div>
 
@@ -56,9 +74,7 @@ const Signup = () => {
               placeholder="johndoe"
               className="w-full input input-bordered h-10"
               value={inputs.username}
-              onChange={(e) =>
-                setInputs({ ...inputs, username: e.target.value })
-              }
+              onChange={(e) => setInputs({ ...inputs, username: e.target.value })}
             />
           </div>
 
@@ -71,9 +87,7 @@ const Signup = () => {
               placeholder="Enter Password"
               className="w-full input input-bordered h-10"
               value={inputs.password}
-              onChange={(e) =>
-                setInputs({ ...inputs, password: e.target.value })
-              }
+              onChange={(e) => setInputs({ ...inputs, password: e.target.value })}
             />
           </div>
 
@@ -86,9 +100,7 @@ const Signup = () => {
               placeholder="Confirm Password"
               className="w-full input input-bordered h-10"
               value={inputs.confirmPassword}
-              onChange={(e) =>
-                setInputs({ ...inputs, confirmPassword: e.target.value })
-              }
+              onChange={(e) => setInputs({ ...inputs, confirmPassword: e.target.value })}
             />
           </div>
 
@@ -110,11 +122,11 @@ const Signup = () => {
               className="btn btn-block btn-sm mt-2 border border-slate-700"
               disabled={loading}
             >
-              {loading ? (
+              {loading ? 
                 <span className="loading loading-spinner"></span>
-              ) : (
+              : 
                 "Sign Up"
-              )}
+              }
             </button>
           </div>
         </form>

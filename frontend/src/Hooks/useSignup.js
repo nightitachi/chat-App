@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import toast, { ErrorIcon } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 const useSignup = () => {
   const [loading , setLoading] = useState(false)
   const signup= async({fullName , username , password , confirmPassword , gender})=>{
@@ -16,7 +16,7 @@ const useSignup = () => {
       if(data.error){
         throw new Error(data.error)
       }
-      console.log(data)
+      localStorage.setItem("chat-user" , JSON.stringify(data))
     } catch (error) {
       toast.error(error.message)
     }
@@ -26,19 +26,18 @@ const useSignup = () => {
 
 export default useSignup
 
-function handleInputErrors({fullName , username , password , confirmPassword , gender}){
-  if(!fullName || !username || !password || !confirmPassword || !gender){
-    toast.error("somethin is missing  !  you should full the task .")
-    return false
-
+function handleInputErrors({ fullName, username, password, confirmPassword, gender }) {
+  if (!fullName || !username || !password || !confirmPassword || !gender) {
+    toast.error("Something is missing! Please fill out all the fields.");
+    return false;
   }
-  if(confirmPassword !== password){
-    toast.error("please valid the confirmed password ! ")
-    return false
+  if (confirmPassword !== password) {
+    toast.error("Passwords do not match. Please confirm your password.");
+    return false;
   }
-  if(password.length <6){
-    toast.error("password should more than 6 chatacters")
-    return false
+  if (password.length < 6) {
+    toast.error("Password should be more than 6 characters.");
+    return false;
   }
-  return true
+  return true;
 }
