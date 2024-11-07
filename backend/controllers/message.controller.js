@@ -2,6 +2,8 @@ import Conversations from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 
+
+//send message controller
 export const sendMessage= async(req,res)=>{
   try {
     const {message} = req.body;
@@ -28,7 +30,7 @@ export const sendMessage= async(req,res)=>{
       conversation.messages.push(newMessage._id)
     }
     
-    
+    //this will run in parallel to win more time ! 
     await Promise.all([conversation.save(),newMessage.save() ])
     res.status(201).json(newMessage)
   } catch (error) {
@@ -39,6 +41,8 @@ export const sendMessage= async(req,res)=>{
 }
 
 
+// get message controller
+
 export const getMessage= async(req , res)=>{
   try {
     const {id:userTochatId} = req.params;
@@ -46,13 +50,12 @@ export const getMessage= async(req , res)=>{
 
     const conversation = await Conversations.findOne({
       participents:{$all :[senderId , userTochatId]},
-    }).populate("messages");
+    }).populate("messages")
 
     if(!conversation) return res.status(200).json([]);
 
-    const messages= conversation.messages;
     
-    res.status(200).json(messages)
+    res.status(200).json(conversation.messages)
   } catch (error) {
     console.log("error message : " , error.message);
     res.status(500).json({error: "internal server error"})

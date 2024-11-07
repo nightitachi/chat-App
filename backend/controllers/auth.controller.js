@@ -59,27 +59,24 @@ export const login = async (req, res) => {
 
     // Check if the user exists
     const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(400).json({ error: "Invalid username or password!" });
-    }
+    
 
     // Verify the password
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) {
       return res.status(400).json({ error: "Invalid username or password!" });
     }
+    if (!user) {
+      return res.status(400).json({ error: "Invalid username or password!" });
+    }
 
-    // If login is successful, generate token and set cookies
     generateTokenAndSetCookies(user._id, res);
 
-    // Send a success response (Optional, could be user data or token info)
     res.status(200).json({
-      message: "Login successful",
-      user: {
-        _id: user._id,
-        username: user.username,
-        fullName: user.fullName,
-      },
+      _id: user._id,
+      username: user.username,
+      fullName: user.fullName,
+      profilePic: user.profilePic,
     });
 
   } catch (error) {
@@ -94,7 +91,7 @@ export const login = async (req, res) => {
 //logout Controller
 export const logout = async(req, res) => {
   try {
-    res.cookie("jwt" ,"",{mawAge:0} )
+    res.cookie("jwt" ,"",{maxAge:0} )
     res.status(200).json({message:"logged out successfully ! "})
   } catch (error) {
     console.error('Error during login:', error.message);
