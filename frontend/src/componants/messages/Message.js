@@ -1,6 +1,6 @@
 import React from 'react';
-
-const Message = () => {
+import { AuthContext } from '../../context/AuthContext';
+const Message = ({message}) => {
   return (
     <div>
       <div className="chat chat-start">

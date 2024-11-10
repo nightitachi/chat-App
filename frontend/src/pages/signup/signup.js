@@ -6,11 +6,11 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 const Signup = () => {
   const [inputs, setInputs] = useState({
-    fullName: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-    gender: "",
+    fullName: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    gender: '',
   });
 
   const { loading, signup } = useSignup();
@@ -118,10 +118,7 @@ const Signup = () => {
           </Link>
 
           <div>
-            <button
-              className="btn btn-block btn-sm mt-2 border border-slate-700"
-              disabled={loading}
-            >
+            <button className="btn btn-block btn-sm mt-2 border border-slate-700" disabled={loading}>
               {loading ? 
                 <span className="loading loading-spinner"></span>
               : 
