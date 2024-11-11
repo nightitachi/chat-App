@@ -19,5 +19,6 @@ const Conversations = () => {
 		</div>
 	);
 };
+export default Conversations;
 
-export default Conversations
+
