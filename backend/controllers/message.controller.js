@@ -1,6 +1,6 @@
 import Conversations from "../models/conversation.model.js";
 import Message from "../models/message.model.js";
-import User from "../models/user.model.js";
+import user from "../models/user.model.js";
 
 
 //send message controller
@@ -8,7 +8,7 @@ export const sendMessage= async(req,res)=>{
   try {
     const {message} = req.body;
     const {id: receiverId} = req.params;
-    const senderId = req.user._id;
+    const senderId = req.User._id;
     
     let conversation = await Conversations.findOne({
       participents:{
