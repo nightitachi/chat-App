@@ -1,5 +1,5 @@
-import User from "../models/user.model.js";
 import bcrypt from "bcrypt";
+import User from "../models/user.model.js";
 import generateTokenAndSetCookies from "../utils/generatetoken.js";
 
 export const signup = async (req, res) => {
@@ -59,7 +59,6 @@ export const login = async (req, res) => {
 
     // Check if the user exists
     const user = await User.findOne({ username });
-    
 
     // Verify the password
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
@@ -70,7 +69,10 @@ export const login = async (req, res) => {
       return res.status(400).json({ error: "Invalid username or password!" });
     }
 
-    generateTokenAndSetCookies(user._id, res);
+    res.cookie('user', user._id, { httpOnly: true, secure: false, sameSite: 'strict' });
+    console.log('Setting cookie:', user._id);
+    
+    // generateTokenAndSetCookies(user._id, res);
 
     res.status(200).json({
       _id: user._id,

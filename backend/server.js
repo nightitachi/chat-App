@@ -13,9 +13,14 @@ dotenv.config();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(cors());
+
+app.use(cors({
+  origin: "http://localhost:3000", // Specify the frontend URL
+  credentials: true,               // Enable cookies and credentials
+}));
 app.use(express.json());
 app.use(cookieParser());
+
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/users" ,userRoute )
